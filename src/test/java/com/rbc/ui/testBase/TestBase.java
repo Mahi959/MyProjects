@@ -10,11 +10,14 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.Arrays;
 
 public class TestBase {
@@ -28,7 +31,7 @@ public class TestBase {
         String tags = System.getProperty("tags", "dynamicGroup");
         String browserHeadLess = System.getProperty("browser.headless.mode", "false");
         String env = System.getProperty("env","pte");
-        String useSeleniumGrid = System.getProperty("useSeleniumGrid", "Y");
+        String useSeleniumGrid = System.getProperty("useSeleniumGrid", "N");
 
         System.out.println("browserName : " + browserName);
         System.out.println("tags : " + tags);
@@ -88,6 +91,10 @@ public class TestBase {
                     break;
             }
         }
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6000));
+        driver.get("https://the-internet.herokuapp.com/");
+        wait.until(ExpectedConditions.urlToBe("https://the-internet.herokuapp.com/"));
 
     }
 

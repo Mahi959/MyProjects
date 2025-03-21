@@ -42,7 +42,7 @@ public class MainRunner {
         String tag = "sanity";
         String browserHeadlessMode = "false";
         String env = Environment.QA.toString();
-        String browserType = Browsers.msedge.toString().toLowerCase();
+        String browserType = Browsers.chrome.toString().toLowerCase();
         String useSeleniumGrid = "N";
 
 
