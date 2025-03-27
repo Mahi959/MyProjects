@@ -1,31 +1,15 @@
 package com.rbc;
 
-import com.rbc.ui.testCases.TestClass;
-import org.apache.poi.ss.formula.functions.T;
-import org.slf4j.LoggerFactory;
+import com.rbc.listeners.GlobalRetryListener;
 import org.testng.TestNG;
-import org.testng.internal.XmlMethodSelector;
 import org.testng.xml.*;
-//import org.testng.xml.internal.Parser;
-//import org.testng.xml.XmlMethodSelector;
-//import org.testng.xml.Parser;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.*;
-import java.util.logging.Logger;
 
-import static org.testng.TestNG.*;
-
-
-import org.testng.TestNG;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
-import org.testng.xml.XmlGroups;
-import org.testng.xml.XmlRun;
-import org.testng.xml.XmlInclude;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainRunner {
@@ -39,7 +23,7 @@ public class MainRunner {
     public static String TAGS = "tags";
 
     public static void main(String[] args) {
-        String tag = "sanity";
+        String tag = "Mahesh";
         String browserHeadlessMode = "false";
         String env = Environment.QA.toString();
         String browserType = Browsers.chrome.toString().toLowerCase();
@@ -83,40 +67,61 @@ public class MainRunner {
             }
         }
 
+        //Set the values globally
         System.setProperty(TAGS, tag);
         System.setProperty(ENVIRONMENT, env);
         System.setProperty(BROWSER, browserType);
         System.setProperty(BROWSER_HEADLESS_MODE, browserHeadlessMode);
         System.setProperty(USE_SELENIUM_GRID, useSeleniumGrid);
 
+        /*
+         * Runs the testNG suite with group names mentioned in testNG suite
+         */
         // Create a TestNG instance and run the tests
 //        TestNG testNG = new TestNG();
 //        List<String> suites = new ArrayList<>();
-//        suites.add(".//src//test//testng.xml"); // Reference to your TestNG XML or define it dynamically
+//        suites.add(".//src//test//testng.xml");
 //        testNG.setTestSuites(suites);
 //        testNG.run();
 
+        // Create TestNG instance
+        TestNG testNG = new TestNG();
 
         // Create an XmlSuite instance
-        String groupToInclude = "dynamicGroup1";
         XmlSuite suite = new XmlSuite();
         suite.setName("DynamicTestSuite");
 
+        // Set the Parallel execution mode dynamically
+        suite.setParallel(XmlSuite.ParallelMode.TESTS);
+
+//        suite.setThreadCount(1); // Force single-threaded execution
+
+        testNG.addListener(new GlobalRetryListener());
+
         // Create an XmlTest instance
-        XmlTest test = new XmlTest(suite);
-        test.setName("DynamicTest");
-        test.setXmlClasses(Collections.singletonList(new org.testng.xml.XmlClass("com.rbc.ui.testCases.TestClass")));
+        XmlTest jsTest = new XmlTest(suite);
+        jsTest.setName("DynamicTest");
+//        jsTest.setPreserveOrder(true);
+
+        // Create an XmlClass instance
+        XmlClass jsClass = new XmlClass("com.rbc.ui.testCases.TestJavascriptActions");
+        jsTest.setXmlClasses(Arrays.asList(jsClass));
+
+        // Second Test class for parallel execution
+        XmlTest test1 = new XmlTest(suite);
+        test1.setName("DynamicTest1");
+        XmlClass class2 = new XmlClass("com.rbc.ui.testCases.TestClass1");
+        test1.setXmlClasses(Arrays.asList(class2));
 
         // Include the group in the test
-        test.addIncludedGroup(tag);
-//      test.addIncludedGroup(groupToInclude);
+        jsTest.addIncludedGroup(tag);
+        test1.addIncludedGroup(tag);
 
-        // Add the test to the suite
-        suite.setTests(Collections.singletonList(test));
+        // Add both tests to the suite
+        suite.setTests(Arrays.asList(jsTest, test1));
 
-        // Create TestNG instance
-        TestNG testNG = new TestNG();
-        testNG.setXmlSuites(Collections.singletonList(suite));
+//      testNG.setXmlSuites(Arrays.asList(suite));
+        testNG.setXmlSuites(List.of(suite));
 
         // Run the suite
         testNG.run();

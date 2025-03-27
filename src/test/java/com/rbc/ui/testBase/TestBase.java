@@ -1,6 +1,5 @@
 package com.rbc.ui.testBase;
 
-
 import com.rbc.util.FileUtil;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +12,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,9 +23,9 @@ import java.util.Arrays;
 
 public class TestBase {
 
-    public WebDriver driver;
+    public static WebDriver driver;
 
-    @BeforeClass(groups = {"sanity", "regression", "dynamicGroup"})
+    @BeforeMethod(groups = {"sanity", "regression", "dryRun","Mahesh"})
     public void setUp() throws IOException {
 
         String browserName = System.getProperty("browser", "chrome");
@@ -63,7 +64,6 @@ public class TestBase {
 
         } else if (useSeleniumGrid.equals("N")) {
 
-            System.out.println("inside useSeleniumGrid = N ");
             switch (browserName.toLowerCase()) {
                 case "chrome":
                     ChromeOptions chromeOptions = new ChromeOptions();
@@ -76,7 +76,6 @@ public class TestBase {
                     break;
 
                 case "msedge":
-                    System.out.println("inside edge");
                     EdgeOptions edgeOptions = new EdgeOptions();
                     edgeOptions.setExperimentalOption("excludeSwitches", Arrays.asList("enable-automation"));
                     edgeOptions.addArguments("--remote-allow-origins=*");
@@ -91,14 +90,15 @@ public class TestBase {
                     break;
             }
         }
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(6000));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         driver.get("https://the-internet.herokuapp.com/");
         wait.until(ExpectedConditions.urlToBe("https://the-internet.herokuapp.com/"));
+        driver.manage().window().maximize();
+        driver.manage().deleteAllCookies();
 
     }
 
-    @AfterClass(groups = {"sanity", "regression", "dynamicGroup"})
+    @AfterMethod(groups = {"sanity", "regression", "dryRun","Mahesh"})
     public void tearDown() {
         driver.quit();
     }
