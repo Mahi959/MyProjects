@@ -17,14 +17,15 @@ public class TestJavascriptActions extends TestBase {
     WelcomePage wp;
     CheckBoxesPage cp;
 
-    @Test(groups = {"Mahesh"},priority = 1)
+    @Test(groups = {"Mahesh"})
     public void findBrokenLinks() throws IOException {
         // find the broken links
         wp = new WelcomePage(driver);
         wp.findBrokenLinks();
+        System.out.println("broken method completed");
     }
 
-    @Test(groups = {"Mahesh"},priority = 2)
+    @Test(groups = {"Mahesh"})
     public void javaScriptActions() {
         wp = new WelcomePage(driver);
         cp = new CheckBoxesPage(driver);

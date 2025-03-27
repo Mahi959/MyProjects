@@ -26,7 +26,7 @@ public class MainRunner {
         String tag = "Mahesh";
         String browserHeadlessMode = "false";
         String env = Environment.QA.toString();
-        String browserType = Browsers.chrome.toString().toLowerCase();
+        String browserType = Browsers.msedge.toString().toLowerCase();
         String useSeleniumGrid = "N";
 
 
@@ -92,9 +92,9 @@ public class MainRunner {
         suite.setName("DynamicTestSuite");
 
         // Set the Parallel execution mode dynamically
-        suite.setParallel(XmlSuite.ParallelMode.TESTS);
+//        suite.setParallel(XmlSuite.ParallelMode.TESTS);
 
-//        suite.setThreadCount(1); // Force single-threaded execution
+        suite.setThreadCount(1); // Force single-threaded execution
 
         testNG.addListener(new GlobalRetryListener());
 
@@ -105,20 +105,22 @@ public class MainRunner {
 
         // Create an XmlClass instance
         XmlClass jsClass = new XmlClass("com.rbc.ui.testCases.TestJavascriptActions");
-        jsTest.setXmlClasses(Arrays.asList(jsClass));
+        XmlClass class2 = new XmlClass("com.rbc.ui.testCases.TestClass1");
+        jsTest.setXmlClasses(Arrays.asList(jsClass,class2));
 
         // Second Test class for parallel execution
-        XmlTest test1 = new XmlTest(suite);
-        test1.setName("DynamicTest1");
-        XmlClass class2 = new XmlClass("com.rbc.ui.testCases.TestClass1");
-        test1.setXmlClasses(Arrays.asList(class2));
+//        XmlTest test1 = new XmlTest(suite);
+//        test1.setName("DynamicTest1");
+//        XmlClass class2 = new XmlClass("com.rbc.ui.testCases.TestClass1");
+//        test1.setXmlClasses(Arrays.asList(class2));
 
         // Include the group in the test
         jsTest.addIncludedGroup(tag);
-        test1.addIncludedGroup(tag);
+//        test1.addIncludedGroup(tag);
 
         // Add both tests to the suite
-        suite.setTests(Arrays.asList(jsTest, test1));
+//        suite.setTests(Arrays.asList(jsTest, test1));
+        suite.setTests(Arrays.asList(jsTest));
 
 //      testNG.setXmlSuites(Arrays.asList(suite));
         testNG.setXmlSuites(List.of(suite));

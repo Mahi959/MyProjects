@@ -23,7 +23,7 @@ import java.util.Arrays;
 
 public class TestBase {
 
-    public static WebDriver driver;
+    public WebDriver driver;
 
     @BeforeMethod(groups = {"sanity", "regression", "dryRun","Mahesh"})
     public void setUp() throws IOException {
@@ -94,9 +94,12 @@ public class TestBase {
         driver.get("https://the-internet.herokuapp.com/");
         wait.until(ExpectedConditions.urlToBe("https://the-internet.herokuapp.com/"));
         driver.manage().window().maximize();
-        driver.manage().deleteAllCookies();
-
+//        driver.manage().deleteAllCookies();
     }
+
+//    public WebDriver getDriver(){
+//        return this.driver;
+//    }
 
     @AfterMethod(groups = {"sanity", "regression", "dryRun","Mahesh"})
     public void tearDown() {

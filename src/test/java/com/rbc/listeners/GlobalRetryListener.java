@@ -14,60 +14,72 @@ import org.testng.annotations.ITestAnnotation;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
-public class GlobalRetryListener implements IAnnotationTransformer, ITestListener {
+public class GlobalRetryListener implements ITestListener,IAnnotationTransformer {
 
     public ExtentSparkReporter sparkReporter;  //UI of the report
     public ExtentReports extent;  //Populate common info on the report
-
     //Creating TC entry in the report and update status of the test methods
-    private Map<String, ExtentTest> extentTestMap = new HashMap<>(); // Map to track ExtentTest instances
+    public ExtentTest test ;
 
-    public GlobalRetryListener() {
-    }
 
     @Override
     public void onTestStart(ITestResult result) {
-        String testCaseName = result.getName();
+
         try {
             // Step 1: Define the report path and check for null or empty
-            String reportPath = "./src/test/reports/myReport.html";
+            String reportPath = "./src/test/reports/myReport.html";  // Use current directory for simplicity
+            System.out.println("Report Path: " + reportPath);  // For debugging
 
-            // Step 2: Ensure the directory exists
-            File reportDir = new File(reportPath).getParentFile();
-            if (!reportDir.exists() && reportDir.mkdirs()) {
-                System.out.println("Directory created: " + reportDir.getAbsolutePath());
+            // Step 2: Ensure the directory exists, create if it doesn't
+            File reportDir = new File(reportPath).getParentFile();  // Get the parent directory
+            if (!reportDir.exists()) {
+                if (reportDir.mkdirs()) {
+                    System.out.println("Directory created: " + reportDir.getAbsolutePath());  // Debugging log
+                } else {
+                    System.out.println("Failed to create directory: " + reportDir.getAbsolutePath());
+                }
             }
 
-            // Step 3: Initialize ExtentSparkReporter
-            sparkReporter = new ExtentSparkReporter(reportPath);
-            sparkReporter.config().setDocumentTitle("Automation Report");
-            sparkReporter.config().setReportName("Functional Testing");
-            sparkReporter.config().setTheme(Theme.DARK);
+            // Step 3: Initialize the ExtentSparkReporter with the valid path
+            if (reportPath != null && !reportPath.isEmpty()) {
+                sparkReporter = new ExtentSparkReporter(reportPath);
+                System.out.println("ExtentSparkReporter initialized successfully with path: " + reportPath);  // Debugging log
+            } else {
+                System.out.println("Invalid report path.");
+            }
 
+        sparkReporter.config().setDocumentTitle("Automation Report");
+        sparkReporter.config().setReportName("Functional Testing");
+        sparkReporter.config().setTheme(Theme.DARK);
+        // Initialize the ExtentReports instance
+        if (extent == null) {
             extent = new ExtentReports();
             extent.attachReporter(sparkReporter);
-            extent.setSystemInfo("Computer Name", "Local host");
-            extent.setSystemInfo("Browser", "Chrome");
-            extent.setSystemInfo("Environment", "QA");
-            extent.setSystemInfo("Tester", "Mahesh");
 
+            extent.setSystemInfo("Computer Name", "Local host");
+            extent.setSystemInfo("browser", "Chrome");
+            extent.setSystemInfo("Environment", "QA");
+            extent.setSystemInfo("tester", "Mahesh");
+        }
         } catch (Exception e) {
             System.out.println("Error during report initialization: " + e.getMessage());
             e.printStackTrace();
         }
 
-        // Create a new ExtentTest entry for each test case
-        ExtentTest test = extent.createTest(testCaseName);
-        extentTestMap.put(testCaseName, test); // Save the ExtentTest instance in the Map
+    }
+
+    @Override
+    public void onTestSkipped(ITestResult result) {
+        String testCaseName = result.getName();
+        ExtentTest test = extent.createTest(testCaseName); // Retrieve the specific ExtentTest
+        test.log(Status.SKIP, "Test case skipped is: " + testCaseName);
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
         String testCaseName = result.getName();
-        ExtentTest test = extentTestMap.get(testCaseName); // Retrieve the specific ExtentTest
+         test = extent.createTest(testCaseName); // Retrieve the specific ExtentTest
         test.log(Status.PASS, "Test case passed is: " + testCaseName);
 
     }
@@ -81,16 +93,10 @@ public class GlobalRetryListener implements IAnnotationTransformer, ITestListene
             return;
         }
         // Log the final failure only
-        ExtentTest test = extentTestMap.get(result.getName());
+        test = extent.createTest(result.getName());
             test.log(Status.FAIL, "Test case failed after retries: " + result.getName());
     }
 
-    @Override
-    public void onTestSkipped(ITestResult result) {
-        String testCaseName = result.getName();
-        ExtentTest test = extentTestMap.get(testCaseName); // Retrieve the specific ExtentTest
-            test.log(Status.SKIP, "Test case skipped is: " + testCaseName);
-    }
 
     @Override
     public void transform(ITestAnnotation annotation, Class testClass, Constructor testConstructor, Method testMethod) {
@@ -100,6 +106,10 @@ public class GlobalRetryListener implements IAnnotationTransformer, ITestListene
 
     @Override
     public void onFinish(ITestContext context) {
-        extent.flush(); // Flush the report to write all entries
+        if (extent != null) {
+            extent.flush(); // Write the report data
+        } else {
+            System.out.println("ExtentReports is null; cannot flush the report.");
+        }
     }
 }

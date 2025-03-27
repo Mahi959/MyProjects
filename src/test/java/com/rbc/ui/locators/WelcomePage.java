@@ -35,25 +35,30 @@ public class WelcomePage extends BasePage {
     @FindBy (name = "email")
     WebElement inputEmail;
 
+    Keywords keywords = new Keywords(driver);
+
     public void clickLinkCheckboxes() {
 
         wait.until(ExpectedConditions.elementToBeClickable(linkCheckboxes));
-        Keywords.scrollToElement(linkCheckboxes);
+        keywords.scrollToElement(linkCheckboxes);
         System.out.println("click checkbox");
         wait.until(ExpectedConditions.elementToBeClickable(linkCheckboxes));
-        Keywords.highlightElement(linkCheckboxes);
+        keywords.highlightElement(linkCheckboxes);
         linkCheckboxes.click();
     }
 
     public void clickForgotLink(){
-        Keywords.scrollToElement(linkForgotPassword);
+//        keywords.scrollToElement(linkForgotPassword);
         wait.until(ExpectedConditions.elementToBeClickable(linkForgotPassword));
-        Keywords.highlightElement(linkForgotPassword);
+//        keywords.highlightElement(linkForgotPassword);
         linkForgotPassword.click();
+        System.out.println("After click frogto");
     }
 
     public void enterEmailInput(){
-        Keywords.clearAndType(inputEmail,"Mahesh");
+        System.out.println("Before enter");
+        keywords.clearAndType(inputEmail,"Mahesh");
+        System.out.println("After enter");
     }
 
     public void findBrokenLinks() throws IOException {

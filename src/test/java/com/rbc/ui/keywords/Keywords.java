@@ -1,19 +1,26 @@
 package com.rbc.ui.keywords;
 
+import com.rbc.ui.locators.BasePage;
 import com.rbc.ui.testBase.TestBase;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class Keywords extends TestBase {
+public class Keywords {
 
-    public static JavascriptExecutor js = (JavascriptExecutor) driver;
-    public static WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    public WebDriver driver;
 
-    public static void highlightElement(WebElement elementLocator){
+    public Keywords(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public void highlightElement(WebElement elementLocator){
+
+         JavascriptExecutor js = (JavascriptExecutor) driver;
 
         String originalStyle = elementLocator.getAttribute("style");
         js.executeScript("arguments[0].setAttribute('style', 'background: yellow; border: 2px solid red;');", elementLocator);
@@ -23,13 +30,18 @@ public class Keywords extends TestBase {
 
     }
 
-    public static void scrollToElement(WebElement locator){
+    public void scrollToElement(WebElement locator){
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
 
         js.executeScript("arguments[0].scrollIntoView(true);",locator);
     }
 
-    public static void clearAndType(WebElement locator, String textToEnter){
+    public void clearAndType(WebElement locator, String textToEnter){
 
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(locator));
         highlightElement(locator);
 
@@ -40,6 +52,5 @@ public class Keywords extends TestBase {
         js.executeScript("arguments[0].value = '"+ textToEnter + "';", locator);
 
     }
-
 
 }

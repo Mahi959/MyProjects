@@ -12,12 +12,17 @@ public class TestClass1 extends TestBase {
     CheckBoxesPage cp;
 
     @Test(groups = {"Mahesh"})
-    public void testCheckBoxes() {
+    public void testCheckBoxes() throws InterruptedException {
 
         wp = new WelcomePage(driver);
         cp = new CheckBoxesPage(driver);
-
+        System.out.println("checkbox method start");
+        Thread.sleep(3000);
         wp.clickLinkCheckboxes();
+        System.out.println("checkbox method completed");
         Assert.assertTrue(cp.isHeaderCorrect());
+        cp.checkUnchecked();
+        Thread.sleep(2000);
     }
+
 }
