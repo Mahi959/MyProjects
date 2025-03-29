@@ -41,10 +41,12 @@ public class AppUtil {
         String fileName = timeStamp+".png";
 
         File destination = new File("src/test/screenshots/"+fileName);
-        try {
-            FileHandler.copy(screenshot,destination);
-        }catch (Exception e){
-            e.printStackTrace();
+
+            try {
+                FileHandler.copy(screenshot, destination);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
-    }
 }

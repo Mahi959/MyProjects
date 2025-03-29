@@ -44,6 +44,8 @@ public class CheckBoxesPage extends BasePage {
            boolean isChecked = (boolean) jse.executeScript("return arguments[0].checked;",checkBox);
            if (isChecked == true){
                checkBox.click();
+           } else {
+               checkBox.click();
            }
         }
 

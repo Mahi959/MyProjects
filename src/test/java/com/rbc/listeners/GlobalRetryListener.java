@@ -57,9 +57,14 @@ public class GlobalRetryListener implements ITestListener,IAnnotationTransformer
             extent = new ExtentReports();
             extent.attachReporter(sparkReporter);
 
-            extent.setSystemInfo("Computer Name", "Local host");
-            extent.setSystemInfo("browser", "Chrome");
-            extent.setSystemInfo("Environment", "QA");
+
+            String computerName = java.net.InetAddress.getLocalHost().getHostName();
+            String browserName = System.getProperty("browser");
+            String env = System.getProperty("env");
+
+            extent.setSystemInfo("Computer Name", computerName);
+            extent.setSystemInfo("browser", browserName);
+            extent.setSystemInfo("Environment", env);
             extent.setSystemInfo("tester", "Mahesh");
         }
         } catch (Exception e) {

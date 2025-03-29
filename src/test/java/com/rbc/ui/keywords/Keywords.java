@@ -53,4 +53,13 @@ public class Keywords {
 
     }
 
+    public void clickElement(WebElement locator){
+        scrollToElement(locator);
+        highlightElement(locator);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+        locator.click();
+    }
+
+
 }

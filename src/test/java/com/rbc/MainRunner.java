@@ -26,9 +26,8 @@ public class MainRunner {
         String tag = "Mahesh";
         String browserHeadlessMode = "false";
         String env = Environment.QA.toString();
-        String browserType = Browsers.msedge.toString().toLowerCase();
+        String browserType = Browsers.chrome.toString().toLowerCase();
         String useSeleniumGrid = "N";
-
 
         for (int i = 0; i < args.length; i++) {
             switch (i) {
@@ -105,7 +104,7 @@ public class MainRunner {
 
         // Create an XmlClass instance
         XmlClass jsClass = new XmlClass("com.rbc.ui.testCases.TestJavascriptActions");
-        XmlClass class2 = new XmlClass("com.rbc.ui.testCases.TestClass1");
+        XmlClass class2 = new XmlClass("com.rbc.ui.testCases.TestActionClass");
         jsTest.setXmlClasses(Arrays.asList(jsClass,class2));
 
         // Second Test class for parallel execution

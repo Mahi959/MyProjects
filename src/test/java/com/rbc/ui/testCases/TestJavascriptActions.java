@@ -1,6 +1,7 @@
 package com.rbc.ui.testCases;
 
 import com.rbc.ui.locators.CheckBoxesPage;
+import com.rbc.ui.locators.DragAndDrop;
 import com.rbc.ui.locators.WelcomePage;
 import com.rbc.ui.testBase.TestBase;
 
@@ -16,7 +17,7 @@ public class TestJavascriptActions extends TestBase {
 
     WelcomePage wp;
     CheckBoxesPage cp;
-
+    DragAndDrop dd;
     @Test(groups = {"Mahesh"})
     public void findBrokenLinks() throws IOException {
         // find the broken links
@@ -46,5 +47,13 @@ public class TestJavascriptActions extends TestBase {
         System.out.println("javaScriptActions method completed.");
     }
 
+    @Test(groups = {"Mahesh"})
+    public void testDragAndDrop() throws InterruptedException {
+        wp = new WelcomePage(driver);
+        dd = new DragAndDrop(driver);
+        wp.clickDragAndDrop();
+        dd.dragAndDropUsingJS();
+        Thread.sleep(2000);
+    }
 
 }

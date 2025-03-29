@@ -3,6 +3,7 @@ package com.rbc.ui.locators;
 import com.rbc.ui.keywords.Keywords;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -21,6 +22,8 @@ public class WelcomePage extends BasePage {
         super(driver);
     }
 
+    Keywords keywords = new Keywords(driver);
+
     WebDriverWait wait=new WebDriverWait(driver,Duration.ofSeconds(10));
 
     @FindBy (tagName = "A")
@@ -35,7 +38,10 @@ public class WelcomePage extends BasePage {
     @FindBy (name = "email")
     WebElement inputEmail;
 
-    Keywords keywords = new Keywords(driver);
+    @FindBy (linkText = "Drag and Drop")
+     WebElement linkDragAndDrop;
+
+//    Keywords keywords = new Keywords(driver);
 
     public void clickLinkCheckboxes() {
 
@@ -81,6 +87,10 @@ public class WelcomePage extends BasePage {
             }
 
         }
+    }
+
+    public void clickDragAndDrop(){
+        keywords.clickElement(linkDragAndDrop);
     }
 
 

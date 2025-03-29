@@ -14,7 +14,7 @@
 
     <test name="Test2">
         <classes>
-            <class name="com.rbc.ui.testCases.TestClass1"/>
+            <class name="com.rbc.ui.testCases.TestActionClass"/>
         </classes>
     </test>
 
