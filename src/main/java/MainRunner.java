@@ -1,15 +1,12 @@
-package com.rbc;
 
-import com.rbc.listeners.GlobalRetryListener;
+import listeners.GlobalRetryListener;
 import org.testng.TestNG;
 import org.testng.xml.*;
-
-import java.util.Arrays;
 
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
 
-import java.util.List;
+import java.util.*;
 
 public class MainRunner {
 
@@ -18,8 +15,9 @@ public class MainRunner {
     public static final String BROWSER_HEADLESS_MODE = "browser.headless.mode";
     public static final String USE_SELENIUM_GRID = "useSeleniumGrid";
     public static int threads = 1;
-    public static String RETRY_ATTEMPTS = "failedRetryAttempts";
-//    public static
+//    public static String RETRY_ATTEMPTS = "failedRetryAttempts";
+    public static int failedRetryAttempts = 2;
+    //    public static
     public static String TAGS = "tags";
 
     public static void main(String[] args) {
@@ -28,7 +26,7 @@ public class MainRunner {
         String env = Environment.QA.toString();
         String browserType = Browsers.chrome.toString().toLowerCase();
         String useSeleniumGrid = "N";
-        String failedRetryAttempts = "2";
+//        String failedRetryAttempts = "2";
 
         for (int i = 0; i < args.length; i++) {
             switch (i) {
@@ -52,10 +50,10 @@ public class MainRunner {
                     browserHeadlessMode = args[CommandLineConstants.NUMBER_FOUR];
                     System.out.println("Browser headless mode : " + browserHeadlessMode);
                 }
-//                case CommandLineConstants.NUMBER_FIVE -> {
-//                    failedRetryAttempts = Integer.parseInt(args[CommandLineConstants.NUMBER_FIVE]);
-//                    System.out.println("Failed Retry Count : " + failedRetryAttempts);
-//                }
+               case CommandLineConstants.NUMBER_FIVE -> {
+                   failedRetryAttempts = Integer.parseInt(args[CommandLineConstants.NUMBER_FIVE]);
+                  System.out.println("Failed Retry Count : " + failedRetryAttempts);
+               }
                 case CommandLineConstants.NUMBER_SIX -> {
                     useSeleniumGrid = args[CommandLineConstants.NUMBER_SIX];
                     System.out.println("Use Selenium Grid : " + useSeleniumGrid);
@@ -73,15 +71,15 @@ public class MainRunner {
         System.setProperty(BROWSER, browserType);
         System.setProperty(BROWSER_HEADLESS_MODE, browserHeadlessMode);
         System.setProperty(USE_SELENIUM_GRID, useSeleniumGrid);
-        System.setProperty(RETRY_ATTEMPTS,failedRetryAttempts);
+        System.setProperty("failedRetryAttempts",String.valueOf(failedRetryAttempts));
 
         /*
          * Runs the testNG suite with group names mentioned in testNG suite
          */
-        // Create a TestNG instance and run the tests
+//         Create a TestNG instance and run the tests
 //        TestNG testNG = new TestNG();
 //        List<String> suites = new ArrayList<>();
-//        suites.add(".//src//test//testng.xml");
+//        suites.add("./testng.xml");
 //        testNG.setTestSuites(suites);
 //        testNG.run();
 

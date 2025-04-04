@@ -1,17 +1,17 @@
-package com.rbc.listeners;
+package listeners;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.rbc.DriverManager;
-import com.rbc.util.AppUtil;
 import org.testng.IAnnotationTransformer;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.annotations.ITestAnnotation;
+import util.AppUtil;
+import util.DriverManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,14 +23,14 @@ public class GlobalRetryListener implements ITestListener,IAnnotationTransformer
     public ExtentSparkReporter sparkReporter;  //UI of the report
     public ExtentReports extent;  //Populate common info on the report
     //Creating TC entry in the report and update status of the test methods
-    public ExtentTest test ;
+    public ExtentTest test;
 
     @Override
     public void onTestStart(ITestResult result) {
 
         try {
             // Step 1: Define the report path and check for null or empty
-            String reportPath = "./src/test/reports/myReport.html";  // Use current directory for simplicity
+            String reportPath = "./uReports/myReport.html";  // Use current directory for simplicity
             System.out.println("Report Path: " + reportPath);  // For debugging
 
             // Step 2: Ensure the directory exists, create if it doesn't
@@ -51,24 +51,24 @@ public class GlobalRetryListener implements ITestListener,IAnnotationTransformer
                 System.out.println("Invalid report path.");
             }
 
-        sparkReporter.config().setDocumentTitle("Automation Report");
-        sparkReporter.config().setReportName("Functional Testing");
-        sparkReporter.config().setTheme(Theme.DARK);
-        // Initialize the ExtentReports instance
-        if (extent == null) {
-            extent = new ExtentReports();
-            extent.attachReporter(sparkReporter);
+            sparkReporter.config().setDocumentTitle("Automation Report");
+            sparkReporter.config().setReportName("Functional Testing");
+            sparkReporter.config().setTheme(Theme.DARK);
+            // Initialize the ExtentReports instance
+            if (extent == null) {
+                extent = new ExtentReports();
+                extent.attachReporter(sparkReporter);
 
 
-            String computerName = java.net.InetAddress.getLocalHost().getHostName();
-            String browserName = System.getProperty("browser");
-            String env = System.getProperty("env");
+                String computerName = java.net.InetAddress.getLocalHost().getHostName();
+                String browserName = System.getProperty("browser");
+                String env = System.getProperty("env");
 
-            extent.setSystemInfo("Computer Name", computerName);
-            extent.setSystemInfo("browser", browserName);
-            extent.setSystemInfo("Environment", env);
-            extent.setSystemInfo("tester", "Mahesh");
-        }
+                extent.setSystemInfo("Computer Name", computerName);
+                extent.setSystemInfo("browser", browserName);
+                extent.setSystemInfo("Environment", env);
+                extent.setSystemInfo("tester", "Mahesh");
+            }
         } catch (Exception e) {
             System.out.println("Error during report initialization: " + e.getMessage());
             e.printStackTrace();
@@ -140,3 +140,4 @@ public class GlobalRetryListener implements ITestListener,IAnnotationTransformer
         }
     }
 }
+

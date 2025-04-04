@@ -1,14 +1,15 @@
 package com.rbc.ui.testCases;
 
-import com.rbc.DriverManager;
 import com.rbc.ui.locators.CheckBoxesPage;
 import com.rbc.ui.locators.DragAndDrop;
 import com.rbc.ui.locators.WelcomePage;
 import com.rbc.ui.testBase.TestBase;
 
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import util.DriverManager;
 
 
 public class TestJavascriptActions extends TestBase {

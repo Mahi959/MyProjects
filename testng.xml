@@ -3,18 +3,18 @@
 <suite name="TestSuite" parallel="tests">
     <groups>
         <run>
-            <include name="dryRun"/>
+            <include name="Mahesh"/>
         </run>
     </groups>
     <test name="Test1">
         <classes>
-            <class name="rbc.ui.testCases.TestJavascriptActions"/>
+            <class name="com.rbc.ui.testCases.TestJavascriptActions"/>
         </classes>
     </test>
 
     <test name="Test2">
         <classes>
-            <class name="rbc.ui.testCases.TestActionClass"/>
+            <class name="com.rbc.ui.testCases.TestActionClass"/>
         </classes>
     </test>
 

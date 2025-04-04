@@ -1,7 +1,7 @@
 package com.rbc.ui.testBase;
 
-import com.rbc.DriverManager;
-import com.rbc.util.FileUtil;
+
+
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,6 +14,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import util.DriverManager;
+import util.FileUtil;
 
 import java.io.IOException;
 import java.net.URL;

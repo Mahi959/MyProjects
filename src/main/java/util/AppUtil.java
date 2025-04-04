@@ -1,4 +1,4 @@
-package com.rbc.util;
+package util;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.OutputType;
@@ -41,20 +41,20 @@ public class AppUtil {
 
         String fileName = screenshotName+timeStamp+".png";
 
-        File screenshotDir = new File("./src/test/screenshots/");
+        File screenshotDir = new File("./uScreenshots/");
         if (!screenshotDir.exists()) {
             screenshotDir.mkdirs();
         }
 
-        File destination = new File("./src/test/screenshots/"+fileName);
+        File destination = new File("./uScreenshots/"+fileName);
 
-            try {
-                FileHandler.copy(screenshot, destination);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return fileName;
-
+        try {
+            FileHandler.copy(screenshot, destination);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        return fileName;
+
+    }
 }

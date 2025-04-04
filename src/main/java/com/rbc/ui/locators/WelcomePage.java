@@ -1,6 +1,6 @@
 package com.rbc.ui.locators;
 
-import com.rbc.ui.keywords.Keywords;
+import keywords.Keywords;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

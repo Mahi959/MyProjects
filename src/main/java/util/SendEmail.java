@@ -1,15 +1,15 @@
-package com.rbc.util;
+package util;
+
 
 import jakarta.activation.DataHandler;
 import jakarta.activation.FileDataSource;
+import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
 import net.minidev.json.JSONObject;
 import org.slf4j.LoggerFactory;
-
-import jakarta.mail.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,10 +19,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import static com.rbc.util.EmailInlineText.emailInlineHTMLText;
-
-//import static util.EmailInlineText.emailInlineHTMLText;
-import static com.rbc.util.SmtpConfig.*;
+import static util.EmailInlineText.emailInlineHTMLText;
+import static util.SmtpConfig.*;
 
 public class SendEmail {
 
@@ -34,7 +32,7 @@ public class SendEmail {
     private int maxAttachmentSizeInMb = 15;
     private String browserType;
 
-    private static final Logger LOGGER = (Logger) LoggerFactory.getLogger(com.rbc.util.SendEmail.class);
+    private static final Logger LOGGER = (Logger) LoggerFactory.getLogger(SendEmail.class);
 
     public SendEmail(String filePath, JSONObject jsonObject, String env, String tags, String browserType) {
         this.filePath = filePath;
@@ -45,7 +43,7 @@ public class SendEmail {
     }
 
     public void sendEmail() {
-        com.rbc.util.SmtpConfig smtpConfig = new SmtpConfig();
+        SmtpConfig smtpConfig = new SmtpConfig();
         try {
             String emailBody = emailInlineHTMLText().toString();
             //Extracting execution details from results-json under cucumber-html-reports

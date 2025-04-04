@@ -1,4 +1,4 @@
-package com.rbc.ui.keywords;
+package keywords;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
