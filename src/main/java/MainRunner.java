@@ -1,32 +1,43 @@
 
+import com.sun.jna.WString;
 import listeners.GlobalRetryListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.TestNG;
 import org.testng.xml.*;
 
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
+import util.FileUtil;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
+
 
 public class MainRunner {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(MainRunner.class);
     public static final String ENVIRONMENT = "env";
     public static final String BROWSER = "browser";
     public static final String BROWSER_HEADLESS_MODE = "browser.headless.mode";
     public static final String USE_SELENIUM_GRID = "useSeleniumGrid";
     public static int threads = 1;
-//    public static String RETRY_ATTEMPTS = "failedRetryAttempts";
     public static int failedRetryAttempts = 2;
-    //    public static
     public static String TAGS = "tags";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String tag = "Mahesh";
         String browserHeadlessMode = "false";
         String env = Environment.QA.toString();
         String browserType = Browsers.chrome.toString().toLowerCase();
         String useSeleniumGrid = "N";
-//        String failedRetryAttempts = "2";
+        String nodeRequestUrl = FileUtil.getPropValue("selenium.grid.node.url");
 
         for (int i = 0; i < args.length; i++) {
             switch (i) {
@@ -72,6 +83,16 @@ public class MainRunner {
         System.setProperty(BROWSER_HEADLESS_MODE, browserHeadlessMode);
         System.setProperty(USE_SELENIUM_GRID, useSeleniumGrid);
         System.setProperty("failedRetryAttempts",String.valueOf(failedRetryAttempts));
+
+        // Request Selenium grid nodes
+        if(useSeleniumGrid.equals("Y")){
+            try {
+                setGridNodes(threads,browserType,nodeRequestUrl);
+            } catch (IOException e) {
+                LOGGER.error("exception while running setGridNodes main " + e);
+                return;
+            }
+        }
 
         /*
          * Runs the testNG suite with group names mentioned in testNG suite
@@ -126,6 +147,36 @@ public class MainRunner {
 
         // Run the suite
         testNG.run();
+
+    }
+
+    public static void setGridNodes(int threads, String browserType, String  nodeRequestUrl) throws IOException {
+        // Lambda to trigger desired count = current desired count + threads, wait for # nodes to be available
+        URL url = new URL(nodeRequestUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Accept","application/json");
+        String payload = "{\"threads\":" + threads + ", \"browser\": \"" + browserType + "\"}";
+        byte[] out = payload.getBytes(StandardCharsets.UTF_8);
+        LOGGER.info("payload : " + payload);
+        OutputStream stream = connection.getOutputStream();
+        stream.write(out);
+        LOGGER.info(connection.getResponseCode() + " " + connection.getResponseMessage());
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null ) {
+            response.append(inputLine);
+        }
+        in.close();
+        LOGGER.info(response.toString());
+        connection.disconnect();
+        if(connection.getResponseCode() != 200)
+            throw new IOException("Failed to update grid nodes");
+
 
     }
 
