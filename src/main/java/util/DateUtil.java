@@ -34,7 +34,7 @@ public class DateUtil {
         return String.valueOf(LocalDate.now().getYear());
     }
 
-    public static String addDayInDate(String dateStr, String dateFormat, int day){
+    public static String addDayInDate(String dateStr, String dateFormat, int day) throws ParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
 
         LocalDate date = LocalDate.parse(dateStr, formatter);

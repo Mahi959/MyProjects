@@ -32,5 +32,4 @@ public class DragAndDrop extends BasePage{
         ((JavascriptExecutor) driver).executeScript(script, source, destination);
     }
 
-
 }

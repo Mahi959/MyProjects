@@ -3,7 +3,7 @@ package com.rbc.ui.testCases;
 import com.rbc.DriverManager;
 import com.rbc.ui.locators.CheckBoxesPage;
 import com.rbc.ui.locators.DragAndDrop;
-import com.rbc.ui.locators.WelcomePage;
+import com.rbc.ui.locators.SwiggyPage;
 import com.rbc.ui.testBase.TestBase;
 
 import org.openqa.selenium.JavascriptExecutor;
@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 
 public class TestJavascriptActions extends TestBase {
 
-    WelcomePage wp;
+    SwiggyPage wp;
     CheckBoxesPage cp;
     DragAndDrop dd;
 //    @Test(groups = {"Mahesh"})
@@ -47,7 +47,7 @@ public class TestJavascriptActions extends TestBase {
 
     @Test(groups = {"Mahesh"})
     public void testDragAndDrop() throws InterruptedException {
-        wp = new WelcomePage(DriverManager.getDriver());
+        wp = new SwiggyPage(DriverManager.getDriver());
         dd = new DragAndDrop(DriverManager.getDriver());
         wp.clickDragAndDrop();
         dd.dragAndDropUsingJS();

@@ -116,7 +116,7 @@ public class MainRunner {
 
         suite.setThreadCount(1); // Force single-threaded execution
 
-        testNG.addListener(new GlobalRetryListener());
+//        testNG.addListener(new GlobalRetryListener());
 
         // Create an XmlTest instance
         XmlTest jsTest = new XmlTest(suite);

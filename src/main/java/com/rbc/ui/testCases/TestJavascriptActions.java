@@ -2,7 +2,7 @@ package com.rbc.ui.testCases;
 
 import com.rbc.ui.locators.CheckBoxesPage;
 import com.rbc.ui.locators.DragAndDrop;
-import com.rbc.ui.locators.WelcomePage;
+import com.rbc.ui.locators.SwiggyPage;
 import com.rbc.ui.testBase.TestBase;
 
 
@@ -14,7 +14,7 @@ import util.DriverManager;
 
 public class TestJavascriptActions extends TestBase {
 
-    WelcomePage wp;
+    SwiggyPage wp;
     CheckBoxesPage cp;
     DragAndDrop dd;
 //    @Test(groups = {"Mahesh"})
@@ -25,7 +25,7 @@ public class TestJavascriptActions extends TestBase {
 //        System.out.println("broken method completed");
 //    }
 
-    @Test(groups = {"Mahesh"})
+    @Test(groups = {"Mahesh1"})
     public void javaScriptActions() {
 //        wp = new WelcomePage(driver);
         cp = new CheckBoxesPage(DriverManager.getDriver());
@@ -46,9 +46,9 @@ public class TestJavascriptActions extends TestBase {
         System.out.println("javaScriptActions method completed.");
     }
 
-    @Test(groups = {"Mahesh"})
+    @Test(groups = {"Mahesh1"})
     public void testDragAndDrop() throws InterruptedException {
-        wp = new WelcomePage(DriverManager.getDriver());
+        wp = new SwiggyPage(DriverManager.getDriver());
         dd = new DragAndDrop(DriverManager.getDriver());
         wp.clickDragAndDrop();
         dd.dragAndDropUsingJS();

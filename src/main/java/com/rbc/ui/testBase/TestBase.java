@@ -6,6 +6,7 @@ import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -16,6 +17,10 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import util.DriverManager;
 import util.FileUtil;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.io.IOException;
 import java.net.URL;
@@ -68,23 +73,38 @@ public class TestBase {
         } else if (useSeleniumGrid.equals("N")) {
 
             switch (browserName.toLowerCase()) {
+
                 case "chrome":
-                    ChromeOptions chromeOptions = new ChromeOptions();
-                    chromeOptions.setExperimentalOption("excludeSwitches", Arrays.asList("enable-automation"));
-                    chromeOptions.addArguments("--remote-allow-origins=*");
-                    if (browserHeadLess.equalsIgnoreCase("true")) {
-                        chromeOptions.addArguments("--headless");
+                    String defaultDownloadPath = System.getProperty("user.dir") + File.separator + "Swiggy"+ File.separator + "tempDownloads";
+                            File downloadDir = new File(defaultDownloadPath);
+                    if (!downloadDir.exists()) {
+                        downloadDir.mkdirs();
                     }
+
+                    Map<String, Object> prefs = new HashMap<>();
+                    prefs.put("download.default_directory", defaultDownloadPath);
+                    prefs.put("download.prompt_for_download", false);
+
+                    ChromeOptions chromeOptions = new ChromeOptions();
+                    chromeOptions.setExperimentalOption("prefs", prefs);
+                    chromeOptions.addArguments("--remote-allow-origins=*");
+                    chromeOptions.addArguments("--disable-notifications");
+
+                    if (browserHeadLess.equalsIgnoreCase("true")) {
+                        chromeOptions.addArguments("--headless=new"); // modern headless supports downloads
+                    }
+
                     driverInstance = new ChromeDriver(chromeOptions);
+
                     break;
 
                 case "msedge":
+
                     EdgeOptions edgeOptions = new EdgeOptions();
                     edgeOptions.setExperimentalOption("excludeSwitches", Arrays.asList("enable-automation"));
                     edgeOptions.addArguments("--remote-allow-origins=*");
                     if (browserHeadLess.equalsIgnoreCase("true")) {
                         edgeOptions.addArguments("--headless");
-                        System.out.println("inside headless");
                     }
                     driverInstance = new EdgeDriver(edgeOptions);
                     break;
@@ -97,10 +117,6 @@ public class TestBase {
 
         WebDriver driver = DriverManager.getDriver();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.get("https://the-internet.herokuapp.com/");
-        wait.until(ExpectedConditions.urlToBe("https://the-internet.herokuapp.com/"));
-        driver.manage().window().maximize();
 //        driver.manage().deleteAllCookies();
     }
 
